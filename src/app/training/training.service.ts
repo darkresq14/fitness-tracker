@@ -8,15 +8,12 @@ import "rxjs/add/operator/map";
   providedIn: "root",
 })
 export class TrainingService {
+  private runningExercise: Exercise;
   private availableExercises: Exercise[] = [];
 
-  private runningExercise: Exercise;
-
-  private pastExercises: Exercise[] = [];
-
-  exerciseChanged = new Subject<Exercise>();
-
-  exercisesChanged = new Subject<Exercise[]>();
+  runningExerciseChanged = new Subject<Exercise>();
+  availableExercisesChanged = new Subject<Exercise[]>();
+  pastExercisesChanged = new Subject<Exercise[]>();
 
   constructor(private db: AngularFirestore) {}
 
@@ -34,7 +31,7 @@ export class TrainingService {
       )
       .subscribe((res) => {
         this.availableExercises = res;
-        this.exercisesChanged.next([...this.availableExercises]);
+        this.availableExercisesChanged.next([...this.availableExercises]);
       });
   }
 
@@ -42,29 +39,34 @@ export class TrainingService {
     return { ...this.runningExercise };
   }
 
-  getPastExercises() {
-    return this.pastExercises.slice();
+  fetchPastExercises() {
+    this.db
+      .collection("pastExercises")
+      .valueChanges()
+      .subscribe((exercises: Exercise[]) => {
+        this.pastExercisesChanged.next(exercises);
+      });
   }
 
   startExercise(selectedId: string) {
     this.runningExercise = this.availableExercises.find(
       (ex) => ex.id === selectedId
     );
-    this.exerciseChanged.next({ ...this.runningExercise });
+    this.runningExerciseChanged.next({ ...this.runningExercise });
   }
 
   completeExercise() {
-    this.pastExercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       date: new Date(),
       state: "completed",
     });
     this.runningExercise = null;
-    this.exerciseChanged.next(null);
+    this.runningExerciseChanged.next(null);
   }
 
   cancelExercise(progress: number) {
-    this.pastExercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       duration: (this.runningExercise.duration * progress) / 100,
       calories: (this.runningExercise.calories * progress) / 100,
@@ -72,6 +74,10 @@ export class TrainingService {
       state: "cancelled",
     });
     this.runningExercise = null;
-    this.exerciseChanged.next(null);
+    this.runningExerciseChanged.next(null);
+  }
+
+  private addDataToDatabase(exercise: Exercise) {
+    this.db.collection("pastExercises").add(exercise);
   }
 }

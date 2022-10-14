@@ -14,10 +14,10 @@ export class TrainingComponent implements OnInit, OnDestroy {
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit() {
-    this.exerciseSubscription = this.trainingService.exerciseChanged.subscribe(
-      (ex) =>
+    this.exerciseSubscription =
+      this.trainingService.runningExerciseChanged.subscribe((ex) =>
         ex ? (this.ongoingTraining = true) : (this.ongoingTraining = false)
-    );
+      );
   }
 
   ngOnDestroy(): void {
