@@ -1,4 +1,4 @@
-<section>
+<section style="padding: 30px">
   <form
     fxLayout="column"
     fxLayoutAlign="center center"
@@ -33,9 +33,11 @@
       mat-raised-button
       color="primary"
       [disabled]="loginForm.invalid"
+      *ngIf="!isLoading"
     >
       Submit
     </button>
+    <mat-spinner *ngIf="isLoading" [diameter]="40"></mat-spinner>
   </form>
 </section>
 

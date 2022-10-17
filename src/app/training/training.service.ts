@@ -3,6 +3,7 @@ import { Exercise } from "./exercise.model";
 import { Subject, Subscription } from "rxjs";
 import { AngularFirestore } from "angularfire2/firestore";
 import "rxjs/add/operator/map";
+import { UIService } from "../shared/ui.service";
 
 @Injectable({
   providedIn: "root",
@@ -17,25 +18,41 @@ export class TrainingService {
 
   private fbSubs: Subscription[] = [];
 
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore, private uiService: UIService) {}
 
   fetchAvailableExercises() {
+    this.uiService.loadingStateChanged.next(true);
     this.fbSubs.push(
       this.db
         .collection("availableExercises")
         .snapshotChanges()
-        .map((docArray) =>
-          docArray.map((doc) => {
-            return {
-              id: doc.payload.doc.id,
-              ...(doc.payload.doc.data() as Exercise),
-            };
-          })
-        )
-        .subscribe((res) => {
-          this.availableExercises = res;
-          this.availableExercisesChanged.next([...this.availableExercises]);
+        .map((docArray) => {
+          {
+            // throw new Error("Test");
+            return docArray.map((doc) => {
+              return {
+                id: doc.payload.doc.id,
+                ...(doc.payload.doc.data() as Exercise),
+              };
+            });
+          }
         })
+        .subscribe(
+          (res) => {
+            this.uiService.loadingStateChanged.next(false);
+            this.availableExercises = res;
+            this.availableExercisesChanged.next([...this.availableExercises]);
+          },
+          (err) => {
+            this.uiService.loadingStateChanged.next(false);
+            this.uiService.showSnackbar(
+              `Fetching exercises failed, please try again later`,
+              null,
+              3000
+            );
+            this.availableExercisesChanged.next(null);
+          }
+        )
     );
   }
 
