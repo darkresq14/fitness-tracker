@@ -9,6 +9,7 @@ import {
   Route,
 } from "@angular/router";
 import { Observable } from "rxjs";
+import { take } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import * as fromRoot from "../app.reducer";
 
@@ -26,13 +27,13 @@ export class AuthGuard implements CanActivate, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.store.select(fromRoot.getIsAuth)
+    return this.store.select(fromRoot.getIsAuth).pipe(take(1))
       ? true
       : this.router.navigate(["/login"]);
   }
 
   canLoad(route: Route) {
-    return this.store.select(fromRoot.getIsAuth)
+    return this.store.select(fromRoot.getIsAuth).pipe(take(1))
       ? true
       : this.router.navigate(["/login"]);
   }
