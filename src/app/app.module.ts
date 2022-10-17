@@ -14,6 +14,8 @@ import { environment } from "../environments/environment";
 import { AngularFireModule } from "angularfire2";
 import { AuthModule } from "./auth/auth.module";
 import { AngularFirestoreModule } from "angularfire2/firestore";
+import { StoreModule } from "@ngrx/store";
+import { reducers } from "./app.reducer";
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AuthModule,
     AngularFirestoreModule,
+    StoreModule.forRoot(reducers),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

@@ -67,10 +67,10 @@
       type="submit"
       mat-raised-button
       color="primary"
-      *ngIf="!isLoading"
+      *ngIf="!(isLoading$ | async)"
     >
       Submit
     </button>
-    <mat-spinner *ngIf="isLoading" [diameter]="40"></mat-spinner>
+    <mat-spinner *ngIf="isLoading$ | async" [diameter]="40"></mat-spinner>
   </form>
 </section>
