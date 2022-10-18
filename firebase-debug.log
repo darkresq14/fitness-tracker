@@ -1,0 +1,25 @@
+[debug] [2022-10-18T06:25:10.514Z] ----------------------------------------------------------------------
+[debug] [2022-10-18T06:25:10.515Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2022-10-18T06:25:10.516Z] CLI Version:   11.14.4
+[debug] [2022-10-18T06:25:10.516Z] Platform:      win32
+[debug] [2022-10-18T06:25:10.516Z] Node Version:  v16.17.1
+[debug] [2022-10-18T06:25:10.517Z] Time:          Tue Oct 18 2022 09:25:10 GMT+0300 (Ora de vară a Europei de Est)
+[debug] [2022-10-18T06:25:10.517Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-10-18T06:25:10.588Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-10-18T06:25:10.588Z] > authorizing via signed-in user (bielz.razvan@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\Programming\Courses\20. Angular (Full App) with Angular Material, Angularfire & NgRx\fitness-tracker
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
